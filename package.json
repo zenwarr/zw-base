@@ -1,6 +1,6 @@
 {
-  "name": "@zcomp/closest",
-  "version": "0.0.2",
+  "name": "@zcomp/base",
+  "version": "0.0.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,10 +21,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zenwarr/zw-closest"
+    "url": "https://github.com/zenwarr/zw-base"
   },
   "bugs": {
-    "url": "https://github.com/zenwarr/zw-closest/issues"
+    "url": "https://github.com/zenwarr/zw-base/issues"
   },
   "scripts": {
     "build": "webpack",
