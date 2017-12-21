@@ -29,11 +29,12 @@ let factory = new ComponentFactory<SomeComponent, SomeComponentOptions>('SomeCom
 describe("ComponentFactory", function () {
   it('should create components', function () {
     init(`<div id="root" class="js-some"></div><div class="not-a-root" id="not-a-root"></div>`);
-    factory.init(null, {
+    factory.init({
       someOption: '10'
     });
-    let comp = SomeComponent.fromRoot('SomeComponent', elem('root'));
+    let comp = ComponentFactory.fromRoot('SomeComponent', elem('root'));
     expect(comp).to.not.be.empty;
+    expect(factory.fromRoot(elem('root'))).to.be.equal(comp);
     if (comp) {
       expect(comp.root).to.be.equal(elem('root'));
       expect(comp.options).to.be.deep.equal({

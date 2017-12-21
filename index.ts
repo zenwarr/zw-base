@@ -2,10 +2,6 @@ export interface ComponentOptions {
   rootSelector?: string;
 }
 
-export interface ComponentStatic<OptionsType> {
-  fromRoot(root: Element): Component<OptionsType>|null;
-}
-
 export class Component<OptionsType extends ComponentOptions> {
   constructor(protected _root: Element, protected _options: OptionsType) {
 
@@ -14,20 +10,10 @@ export class Component<OptionsType extends ComponentOptions> {
   get root(): Element { return this._root; }
 
   get options(): OptionsType { return this._options; }
-
-  static fromRoot<OptionsType>(componentName: string, root: Element): Component<OptionsType>|null {
-    return (root as any)[`__hidden_comp_${componentName}`] || null;
-  }
-
-  static setComponent<OptionsType>(componentName: string, root: Element, comp: Component<OptionsType>): void {
-    (root as any)[`__hidden_comp_${componentName}`] = comp;
-  }
 }
 
 export interface ComponentCtor<ComponentType extends Component<OptionsType>, OptionsType extends ComponentOptions> {
   new (root: Element, options?: OptionsType): ComponentType;
-  fromRoot(componentName: string, root: Element): ComponentType|null;
-  setComponent(componentName: string, root: Element, comp: ComponentType): void;
 }
 
 export type ComponentCreatorFunc<ComponentType extends Component<OptionsType>, OptionsType extends ComponentOptions>
@@ -39,7 +25,7 @@ export class ComponentFactory<ComponentType extends Component<OptionsType>, Opti
 
   }
 
-  init(ctor?: ComponentCtor<ComponentType, OptionsType>|null|undefined, options?: OptionsType): void {
+  init(options?: OptionsType, ctor?: ComponentCtor<ComponentType, OptionsType>|null|undefined): void {
     return this.initByFunc(this.ctorToCreator(ctor), options);
   }
 
@@ -59,11 +45,11 @@ export class ComponentFactory<ComponentType extends Component<OptionsType>, Opti
     options = assign({}, this._defOptions, options);
     let r: ComponentType|null = null;
     if (this._defComponent) {
-      r = this._defComponent.fromRoot(this._compName, root);
+      r = ComponentFactory.fromRoot(this._compName, root);
     }
     if (!r) {
       r = creator(root, options);
-      this._defComponent.setComponent(this._compName, root, r);
+      ComponentFactory.setComponent(this._compName, root, r);
     }
     return r;
   }
@@ -74,6 +60,24 @@ export class ComponentFactory<ComponentType extends Component<OptionsType>, Opti
     }
     let uCtor = (ctor || this._defComponent) as ComponentCtor<ComponentType, OptionsType>;
     return (root, options) => new uCtor(root, options);
+  }
+
+  fromRoot(root: Element): ComponentType|null {
+    return ComponentFactory.fromRoot<ComponentType, OptionsType>(this._compName, root);
+  }
+
+  static fromRoot<
+      ComponentType extends Component<OptionsType>,
+      OptionsType extends ComponentOptions
+      >(componentName: string, root: Element): ComponentType|null {
+    return (root as any)[`__hidden_comp_${componentName}`] || null;
+  }
+
+  static setComponent<
+      ComponentType extends Component<OptionsType>,
+      OptionsType extends ComponentOptions
+      >(componentName: string,root: Element, comp: Component<OptionsType>): void {
+    (root as any)[`__hidden_comp_${componentName}`] = comp;
   }
 }
 
