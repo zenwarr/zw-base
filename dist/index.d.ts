@@ -1,6 +1,13 @@
 export interface ComponentOptions {
     rootSelector?: string;
 }
+/**
+ * Get tri-state value associated with attribute on a element.
+ * @param {Element} elem Element to check attribute on
+ * @param {string} attrName Attribute name
+ * @returns {boolean | null}
+ */
+export declare function checkTristateAttr(elem: Element, attrName: string): boolean | null;
 export declare class Component<OptionsType extends ComponentOptions> {
     protected _root: Element;
     protected _options: OptionsType;
