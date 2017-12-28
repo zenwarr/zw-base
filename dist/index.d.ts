@@ -9,7 +9,7 @@ export interface ComponentOptions {
  * @returns {boolean} False if elem has no attribute (or its value is equal to "false") and default value is false
  * True if elem has attribute whose value is not equal to "false" or default value is true.
  */
-export declare function checkBinaryOptionAttr(elem: Element, attrName: string, defaultState: boolean): boolean;
+export declare function checkBinaryOptionAttr(elem: Element, attrName: string | null | undefined, defaultState: boolean): boolean;
 export declare class Component<OptionsType extends ComponentOptions> {
     protected _root: Element;
     protected _options: OptionsType;

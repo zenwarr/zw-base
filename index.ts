@@ -10,9 +10,9 @@ export interface ComponentOptions {
  * @returns {boolean} False if elem has no attribute (or its value is equal to "false") and default value is false
  * True if elem has attribute whose value is not equal to "false" or default value is true.
  */
-export function checkBinaryOptionAttr(elem: Element, attrName: string, defaultState: boolean): boolean {
-  if (!elem.hasAttribute(attrName)) {
-    return defaultState;
+export function checkBinaryOptionAttr(elem: Element, attrName: string|null|undefined, defaultState: boolean): boolean {
+  if (!attrName || !elem.hasAttribute(attrName)) {
+    return !!defaultState;
   } else {
     return (elem.getAttribute(attrName) as string).toLowerCase() !== 'false';
   }
