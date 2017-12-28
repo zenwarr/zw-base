@@ -2,12 +2,14 @@ export interface ComponentOptions {
     rootSelector?: string;
 }
 /**
- * Get tri-state value associated with attribute on a element.
+ * Gets value of a binary option that can be specified either through attribute on an element or as a default value in options.
  * @param {Element} elem Element to check attribute on
  * @param {string} attrName Attribute name
- * @returns {boolean | null}
+ * @param {boolean} defaultState Default result value
+ * @returns {boolean} False if elem has no attribute (or its value is equal to "false") and default value is false
+ * True if elem has attribute whose value is not equal to "false" or default value is true.
  */
-export declare function checkTristateAttr(elem: Element, attrName: string): boolean | null;
+export declare function checkBinaryOptionAttr(elem: Element, attrName: string, defaultState: boolean): boolean;
 export declare class Component<OptionsType extends ComponentOptions> {
     protected _root: Element;
     protected _options: OptionsType;
