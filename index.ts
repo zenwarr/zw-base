@@ -1,3 +1,5 @@
+import closest from '@zcomp/closest';
+
 export interface ComponentOptions {
   rootSelector?: string;
 }
@@ -26,6 +28,23 @@ export class Component<OptionsType extends ComponentOptions> {
   get root(): Element { return this._root; }
 
   get options(): OptionsType { return this._options; }
+
+  /**
+   * This function helps to iterate over child elements with given selector, taking into account nesting.
+   * It will be called for each element inside the root element of this component, but not for elements that are inside component of same class nested inside this component.
+   * @param {string} selector
+   * @param {(elem: Element) => void} cb
+   * @private
+   */
+  protected _each(selector: string, cb: (elem: Element) => void): void {
+    let elements = this.root.querySelectorAll(selector);
+    for (let q = 0; q < elements.length; ++q) {
+      let elem = elements[q];
+      if (closest(elem, this.options.rootSelector || '') === this.root) {
+        cb(elem);
+      }
+    }
+  }
 }
 
 export interface ComponentCtor<ComponentType extends Component<OptionsType>, OptionsType extends ComponentOptions> {

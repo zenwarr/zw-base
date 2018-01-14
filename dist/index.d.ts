@@ -16,6 +16,14 @@ export declare class Component<OptionsType extends ComponentOptions> {
     constructor(_root: Element, _options: OptionsType);
     readonly root: Element;
     readonly options: OptionsType;
+    /**
+     * This function helps to iterate over child elements with given selector, taking into account nesting.
+     * It will be called for each element inside the root element of this component, but not for elements that are inside component of same class nested inside this component.
+     * @param {string} selector
+     * @param {(elem: Element) => void} cb
+     * @private
+     */
+    protected _each(selector: string, cb: (elem: Element) => void): void;
 }
 export interface ComponentCtor<ComponentType extends Component<OptionsType>, OptionsType extends ComponentOptions> {
     new (root: Element, options?: OptionsType): ComponentType;
